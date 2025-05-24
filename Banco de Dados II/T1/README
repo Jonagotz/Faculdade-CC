@@ -1,0 +1,7 @@
+Executar o código a seguir: 
+gcc -o bin/main src/main.c src/readFile.c -I include
+./bin/main <table name>
+
+ou 
+make
+./bin/main <table name>
