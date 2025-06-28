@@ -1,0 +1,4 @@
+if true {
+    let COLOR = GREEN ;
+}
+let COLOR = BLUE;
