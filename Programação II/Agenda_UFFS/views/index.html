@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos da UFFS</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="uffs_icon.jpg" type="image/x-icon">
+    <script src="script.js"></script>
+
+</head>
+
+<body class="light-theme">
+
+    <header>
+        <div class="d-flex justify-content-between align-items-center cabecalho">
+            <img src="uffs-logo.png" alt="Logo UFFS" class="uffs-logo">
+            <div>
+                <button id="theme-button" class="btn btn-success">Alterar Tema</button>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+
+    <div style="width: 100vw;" class="btn-group text-center cabecalho-cursos" role="group" aria-label="Basic example">
+        <button type="button" class="col-3 btn btn-outline-success button-cursos" style="color: white;" for="ciencia">Ciência da Computação</button>
+        <button type="button" class="col-3 btn btn-outline-success button-cursos" style="color: white;" for="historia">História</button>
+        <button class="col-3 btn btn-outline-success button-cursos" style="color: white;" for="geografia">Geografia</button>
+    </div>
+    
+    <br></br>
+    
+    <div class="row">
+        <div class="col">
+            <div class="container corpo-inicial-sobre-cursos">
+                <section>
+                    <h2 id="titulo">Ciência da Computação</h2>
+                    <p id="descricao base">
+                        <strong>Turno:</strong><div class="descricao-turno">Vespertino e Noturno.</div>
+                        <strong>Duração mínima:</strong><div class="descricao-duracao"> Matutino: 8 semestres, Noturno: 10 semestres.</div>
+                        <strong>Coordenador:</strong><div class="descricao-coordenacao"> Braulio Adriano de Mello.</div>
+                        <strong>Sobre o Curso:</strong><div class="descricao-sobre">O curso de Ciência da Computação abrange desde a lógica de programação até a construção de sistemas. Durante o programa, os alunos aprendem a utilizar diferentes linguagens computacionais para a criação de sistemas, como C, C++, Java, Python, entre outras.</div>
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

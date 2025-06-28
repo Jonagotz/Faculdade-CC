@@ -1,0 +1,14 @@
+{
+    "name": "auth-project",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+      "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+      "start:server": "cd auth-system && npm start",
+      "start:client": "cd auth-client && npm run dev"
+    },
+    "devDependencies": {
+      "concurrently": "^7.0.0"
+    }
+  }
+  

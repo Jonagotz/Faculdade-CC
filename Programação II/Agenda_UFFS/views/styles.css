@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+    -webkit-tap-highlight-color: transparent;
+  }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.uffs-logo {
+    width: 10%;
+    margin-bottom: 1px;
+    margin: auto;
+    display: block;
+}
+
+.cabecalho {
+    background-color: #00693e;
+}
+
+#theme-button {
+    margin-right: 50px;
+    cursor: pointer;
+}
+
+body {
+    fill: currentColor;
+    height: 100vh;
+    overflow: hidden;
+    color: var(--primary);
+    background: var(--secundary);
+}
+
+.dark-theme {
+    --primary: #f4f4f4;
+    --secundary: #1c1b24;
+}
+  
+.light-theme {
+    --primary: #000;
+    --secundary: #f4f4f4;
+}
+
+.cabecalho-cursos {
+    background-color: #198754;
+}
+
+
+.corpo-inicial-sobre-cursos {
+    text-align: center;
+}
+
+#descricao {
+    padding-left: 400px;
+    padding-right: 400px;
+}
+
+.rodape {
+    background-color: #00693e;
+    text-align: center;
+    position: relative;
+}
