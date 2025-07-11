@@ -6,6 +6,21 @@ from afd import afd
 import re
 import os
 
+class TreeNode:
+    def __init__(self, label, children=None):
+        self.label = label
+        self.children = children or []
+
+    def print_tree(self, prefix="", is_last=True):
+        connector = "└── " if is_last else "├── "
+        print(prefix + connector + str(self.label))
+        prefix += "    " if is_last else "│   "
+        for i, child in enumerate(self.children):
+            is_last_child = (i == len(self.children) - 1)
+            if isinstance(child, TreeNode):
+                child.print_tree(prefix, is_last_child)
+            else:
+                print(prefix + ("└── " if is_last_child else "├── ") + str(child))
 
 class SintaticalAnalyzer:
 
@@ -17,28 +32,27 @@ class SintaticalAnalyzer:
         self.symbol_table = {}
         self.current_expression_value = None
         self.current_variable_stack = []
+        self.derivation_stack = []
 
         self.reducoes = {
-            0: 1,  # E' -> S
-            1: 1,  # S -> épsilon
-            2: 2,  # S -> E S
-            3: 2,  # S -> C S
-            4: 5,  # E -> let var = E ;
-            5: 1,  # E -> true
-            6: 1,  # E -> false
-            7: 1,  # E -> var
-            8: 5,  # C -> if E { E }
+            0: 1,  # PROGRAM' -> SEQUENCE
+            1: 2,  # SEQUENCE -> SEQUENCE STATEMENT
+            2: 1,  # SEQUENCE -> STATEMENT  
+            3: 5,  # STATEMENT -> let IDENT = STATEMENT ;
+            4: 1,  # STATEMENT -> true
+            5: 1,  # STATEMENT -> false
+            6: 1,  # STATEMENT -> IDENT
+            7: 5,  # STATEMENT -> if STATEMENT { STATEMENT }
         }
         self.producoes_goto = {
-            0: "S'",
-            1: "S",
-            2: "S",
-            3: "S",
-            4: "E",
-            5: "E",
-            6: "E",
-            7: "E",
-            8: "C",
+            0: "PROGRAM'",
+            1: "SEQUENCE",
+            2: "SEQUENCE",
+            3: "STATEMENT",
+            4: "STATEMENT",
+            5: "STATEMENT",
+            6: "STATEMENT",
+            7: "STATEMENT",
         }
 
     def load_parse(self, parsing_table_file):
@@ -59,6 +73,7 @@ class SintaticalAnalyzer:
         log_tabela = []
         self.input_stack = tokens + [{'label': '$'}]
         self.log_tabela = log_tabela
+        self.derivation_stack = [TreeNode(t['label']) for t in self.input_stack if t['label'] != '$']
         while True:
             estado_atual = self.state_stack[-1]
             token_data = self.input_stack[0]
@@ -96,6 +111,9 @@ class SintaticalAnalyzer:
             elif action == 'acc' or action == '$' and action == 'acc':
                 print(tabulate(log_tabela, headers=["Pilha", "Fita", "Ação"], tablefmt="grid"))
                 print("Input aceito.\n")
+                print("Árvore de derivação:")
+                if self.derivation_stack:
+                    self.derivation_stack[-1].print_tree()
                 return
             else:
                 print(tabulate(log_tabela, headers=["Pilha", "Fita", "Ação"], tablefmt="grid"))
@@ -115,12 +133,27 @@ class SintaticalAnalyzer:
             self.error(f"Sem informação semantica para produção {production}", self.input_stack.get('line'))
             return False
 
+        children = []
         for _ in range(producao):
             self.state_stack.pop()
             self.symbol_stack.pop()
+            children.insert(0, self.derivation_stack.pop())
+
+        prod_map = {
+            0: "PROGRAM'",
+            1: "SEQUENCE",
+            2: "SEQUENCE",
+            3: "STATEMENT",
+            4: "STATEMENT",
+            5: "STATEMENT",
+            6: "STATEMENT",
+            7: "STATEMENT",
+        }
+        node_label = prod_map[production]
+        node = TreeNode(node_label, children)
+        self.derivation_stack.append(node)
 
         goto_state = self.goto(self.state_stack[-1], producao_goto)
-        
         self.state_stack.append(goto_state)
         self.symbol_stack.append(producao_goto)
         
@@ -154,6 +187,42 @@ class SintaticalAnalyzer:
         if len(self.state_stack) > len(self.symbol_stack):
             pares.append(str(self.state_stack[-1]))
         return ' '.join(pares)
+    
+   # def update_symbol_table(self, production, reduced_tokens):
+   #     # Produção 4: E -> let var = E ;
+   #    print(production)
+   #     if production == 4:
+   #         # Espera-se: [{'label': 'let'}, {'label': 'IDENT'}, {'label': '='}, {'label': valor}, {'label': ';'}]
+   #         current_variable = self.current_variable_stack.pop()
+            # Busca o valor atribuído (o último token relevante)
+   ##         print(current_variable)
+     #       var_value = None
+   #         for t in reduced_tokens:
+    #            if t['label'] not in ['let', '=', ';']:
+    #               var_value = t['label']
+    #                print(var_value, 'kkkkkkkkkkkkkkkk')
+     #       if current_variable in self.symbol_table.keys():
+    #            self.error(f"Tried to Reassign variable '{current_variable}'")
+    #            return False
+     #       else:
+   #             self.symbol_table[current_variable] = {
+    #                "value": var_value,
+    #                "type": "bool" if var_value in ['true', 'false'] else "unknown"
+   #             }
+#
+ #       # Produção 7: E -> var (uso de variável)
+  #      elif production == 7:
+   #         current_variable = self.current_variable_stack.pop()
+    #        print(current_variable, 'AAAAAAAAAAAAAA')
+     #       if current_variable in self.symbol_table.keys():
+     #           self.current_expression_value = self.symbol_table[current_variable]
+      #      else:
+       #         self.error(f"Tried to Invoke No Declared Variable '{current_variable}'")
+        #        return False
+#
+ #       else:
+  #          print('PASSED')
+   #         pass
 
 if __name__ == '__main__':
     parsing_table_file = 'parsing_table.csv'
@@ -164,3 +233,4 @@ if __name__ == '__main__':
     tokens = lexer.transitions('inputs/input.in')[3]
     parser = SintaticalAnalyzer(parsing_table_file)
     result = parser.parse(tokens)
+    # print(parser.symbol_table)

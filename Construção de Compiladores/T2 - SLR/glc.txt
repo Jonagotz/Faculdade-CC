@@ -1,37 +1,14 @@
-E' -> S
-S -> épsilon
-S -> E S
-S -> C S
-E -> let var = E ;
-E -> true
-E -> false
-E -> var
-C -> if E { E }
----------------------------------
-E' -> S
-S -> ES | CS | epsilon
-E -> let var = E ; | true | false | var
-C -> if E { E }
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-TRADUÇÃO: 
-E' (PROGRAM)
-S (SEQUENCE)
-E (ESTATEMENT)
-C (CORPO_IF)
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-VERSÃO TRADUZIDA:
-
 PROGRAM' -> SEQUENCE
-SEQUENCE -> épsilon
-SEQUENCE -> ESTATEMENT SEQUENCE
-SEQUENCE -> CORPO_IF SEQUENCE
-ESTATEMENT -> let var = ESTATEMENT ;
-ESTATEMENT -> true
-ESTATEMENT -> false
-ESTATEMENT -> var
-CORPO_IF -> if ESTATEMENT { ESTATEMENT }
+SEQUENCE -> SEQUENCE STATEMENT
+SEQUENCE -> STATEMENT  
+STATEMENT -> let IDENT = STATEMENT ;
+STATEMENT -> true
+STATEMENT -> false
+STATEMENT -> IDENT
+STATEMENT -> if STATEMENT { STATEMENT }
+---------------------------------
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ---------------------------------
 PROGRAM' -> SEQUENCE
-SEQUENCE -> ESTATEMENT SEQUENCE | CORPO_IF SEQUENCE | epsilon
-ESTATEMENT -> let var = ESTATEMENT ; | true | false | var
-CORPO_IF -> if ESTATEMENT { ESTATEMENT }
+SEQUENCE -> SEQUENCE STATEMENT | STATEMENT
+STATEMENT -> let IDENT = STATEMENT ; | true | false | IDENT | if STATEMENT { STATEMENT }
